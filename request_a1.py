@@ -5,8 +5,20 @@ import datetime
 config = oci.config.from_file()
 compute = oci.core.ComputeClient(config)
 compartment_id = os.environ['COMPARTMENT_ID']
+subnet_id = os.environ['SUBNET_ID']
+ssh_public_key = os.environ['SSH_PUBLIC_KEY']
 
 print(f"実行時刻: {datetime.datetime.now()}")
+
+# ✅ 既存インスタンスチェック（重複作成防止）
+instances = compute.list_instances(compartment_id=compartment_id)
+for instance in instances.data:
+    if instance.display_name == "a1-auto-instance" and \
+       instance.lifecycle_state not in ["TERMINATED", "TERMINATING"]:
+        print(f"✅ インスタンスはすでに存在します（状態: {instance.lifecycle_state}）。スキップします。")
+        exit(0)
+
+print("インスタンスが存在しないため、作成を試みます...")
 
 try:
     response = compute.launch_instance(
@@ -19,13 +31,13 @@ try:
                 memory_in_gbs=24
             ),
             display_name="a1-auto-instance",
-            subnet_id="ocid1.subnet.oc1.ap-singapore-1.aaaaaaaahyfr367wypubaq37nb4s3w2axartkor4jporn6ljkpchqbs44xla",
+            subnet_id=subnet_id,
             create_vnic_details=oci.core.models.CreateVnicDetails(
                 assign_public_ip=True,
-                subnet_id="ocid1.subnet.oc1.ap-singapore-1.aaaaaaaahyfr367wypubaq37nb4s3w2axartkor4jporn6ljkpchqbs44xla"
+                subnet_id=subnet_id
             ),
             metadata={
-                "ssh_authorized_keys": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhN/F+Gvcin+gNkMcjk768Ppnqf6TJqQWKO9Aw3XcdOS4j6Aqwbnp1ZnS9J3PqsT4f9Ighc7bMyTUzxXhc+3rci1NhqwYThRMZD++VPV35JtLX5bZ5yqLNTMOZ61aV5O1NRiAVFxG0c6LDOQPzN4s8rEsC0bhcFM9HlLIfAnT4HgqcYRsxwJWnXm3ltqIQjLpgIiu/hftyEjRnE+Ywc7mxYlcrnbwqLMNMa7ZhCZf+x2AwJ5UTN1l9vw3rPduYAVMGApoSga5L3fGGKRGmDmbIT5bUFB4HT9ES0yfXnWWEt+CiTTVBe1QpagHgax9be5Drl5j8VFVJ5sSmC6QcvNHB akhr_nk014@af921f4d3bbf"
+                "ssh_authorized_keys": ssh_public_key
             }
         )
     )
