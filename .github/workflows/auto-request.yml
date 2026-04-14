@@ -5,6 +5,9 @@ on:
     - cron: '*/5 * * * *'  # 10分ごと
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # ← これを追加
+
 jobs:
   request-a1:
     runs-on: ubuntu-latest
