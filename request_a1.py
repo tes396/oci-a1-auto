@@ -34,5 +34,7 @@ try:
 except oci.exceptions.ServiceError as e:
     if "Out of capacity" in str(e):
         print("⚠️ 容量不足 - 次回再試行します")
+    elif e.status == 429:
+        print("⚠️ リクエスト過多 - 次回再試行します")
     else:
         print(f"エラー: {e}")
