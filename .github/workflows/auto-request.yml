@@ -2,7 +2,7 @@ name: OCI A1 Auto Request
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '*/10 * * * *'  # 10分ごと
   workflow_dispatch:
 
 jobs:
