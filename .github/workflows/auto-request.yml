@@ -1,0 +1,38 @@
+name: OCI A1 Auto Request
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # 1時間ごとに実行
+  workflow_dispatch:        # 手動実行も可能
+
+jobs:
+  request-a1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install OCI SDK
+        run: pip install oci
+
+      - name: Setup OCI Config
+        run: |
+          mkdir -p ~/.oci
+          echo "[DEFAULT]" > ~/.oci/config
+          echo "user=${{ secrets.OCI_USER }}" >> ~/.oci/config
+          echo "fingerprint=${{ secrets.OCI_FINGERPRINT }}" >> ~/.oci/config
+          echo "tenancy=${{ secrets.OCI_TENANCY }}" >> ~/.oci/config
+          echo "region=${{ secrets.OCI_REGION }}" >> ~/.oci/config
+          echo "key_file=~/.oci/oci_api_key.pem" >> ~/.oci/config
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" > ~/.oci/oci_api_key.pem
+          chmod 600 ~/.oci/oci_api_key.pem
+
+      - name: Run A1 Request Script
+        run: python request_a1.py
+        env:
+          COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_ID }}
