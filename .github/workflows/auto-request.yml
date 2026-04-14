@@ -2,21 +2,21 @@ name: OCI A1 Auto Request
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 10分ごと
+    - cron: '*/5 * * * *'  # 5分ごと
   workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # ← これを追加
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Node.js 24対応
 
 jobs:
   request-a1:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4        # v3 → v4 に変更
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v5   # v4 → v5 に変更
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -39,3 +39,5 @@ jobs:
         run: python request_a1.py
         env:
           COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_ID }}
+          SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
+          SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
