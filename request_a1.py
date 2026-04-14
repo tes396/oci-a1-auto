@@ -7,6 +7,7 @@ compute = oci.core.ComputeClient(config)
 compartment_id = os.environ['COMPARTMENT_ID']
 subnet_id = os.environ['SUBNET_ID']
 ssh_public_key = os.environ['SSH_PUBLIC_KEY']
+image_id = os.environ['IMAGE_ID']  # ← 追加
 
 print(f"実行時刻: {datetime.datetime.now()}")
 
@@ -30,6 +31,7 @@ try:
                 ocpus=4,
                 memory_in_gbs=24
             ),
+            image_id=image_id,  # ← 追加
             display_name="a1-auto-instance",
             subnet_id=subnet_id,
             create_vnic_details=oci.core.models.CreateVnicDetails(
