@@ -12,7 +12,7 @@ try:
     response = compute.launch_instance(
         oci.core.models.LaunchInstanceDetails(
             compartment_id=compartment_id,
-            availability_domain="YOUR_AD_NAME",  # ← 要変更
+            availability_domain="DcLl:AP-SINGAPORE-1-AD-1",  # ← これでOK  # ← 要変更
             shape="VM.Standard.A1.Flex",
             shape_config=oci.core.models.LaunchInstanceShapeConfigDetails(
                 ocpus=4,
