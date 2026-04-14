@@ -41,3 +41,4 @@ jobs:
           COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_ID }}
           SUBNET_ID: ${{ secrets.OCI_SUBNET_ID }}
           SSH_PUBLIC_KEY: ${{ secrets.OCI_SSH_PUBLIC_KEY }}
+          IMAGE_ID: ${{ secrets.OCI_IMAGE_ID }}  # ← 追加
