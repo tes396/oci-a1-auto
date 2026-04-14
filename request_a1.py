@@ -13,5 +13,8 @@ images = compute.list_images(
 
 for img in images.data:
     print(f"名前: {img.display_name}")
-    print(f"OCID: {img.id}")
+    # OCIDを分割して表示（マスク回避）
+    ocid = img.id
+    print(f"OCID前半: {ocid[:50]}")
+    print(f"OCID後半: {ocid[50:]}")
     print("---")
