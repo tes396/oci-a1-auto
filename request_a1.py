@@ -12,14 +12,18 @@ try:
     response = compute.launch_instance(
         oci.core.models.LaunchInstanceDetails(
             compartment_id=compartment_id,
-            availability_domain="DcLl:AP-SINGAPORE-1-AD-1",  # ← これでOK  # ← 要変更
+            availability_domain="DcLl:AP-SINGAPORE-1-AD-1",
             shape="VM.Standard.A1.Flex",
             shape_config=oci.core.models.LaunchInstanceShapeConfigDetails(
                 ocpus=4,
                 memory_in_gbs=24
             ),
             display_name="a1-auto-instance",
-            # 必要に応じてサブネットIDなど追加
+            subnet_id="ocid1.subnet.oc1.ap-singapore-1.aaaaaaaahyfr367wypubaq37nb4s3w2axartkor4jporn6ljkpchqbs44xla",
+            create_vnic_details=oci.core.models.CreateVnicDetails(
+                assign_public_ip=True,
+                subnet_id="ocid1.subnet.oc1.ap-singapore-1.aaaaaaaahyfr367wypubaq37nb4s3w2axartkor4jporn6ljkpchqbs44xla"
+            )
         )
     )
     print("✅ インスタンス作成成功！")
