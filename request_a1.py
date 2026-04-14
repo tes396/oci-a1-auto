@@ -1,5 +1,6 @@
 import oci
 import os
+import base64
 
 config = oci.config.from_file()
 compute = oci.core.ComputeClient(config)
@@ -13,8 +14,7 @@ images = compute.list_images(
 
 for img in images.data:
     print(f"名前: {img.display_name}")
-    # OCIDを分割して表示（マスク回避）
-    ocid = img.id
-    print(f"OCID前半: {ocid[:50]}")
-    print(f"OCID後半: {ocid[50:]}")
+    # Base64エンコードして出力（マスク回避）
+    encoded = base64.b64encode(img.id.encode()).decode()
+    print(f"OCID(base64): {encoded}")
     print("---")
