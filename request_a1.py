@@ -23,9 +23,7 @@ print("インスタンスが存在しないため、作成を試みます...")
 
 # 複数のAvailability Domainを順番に試す
 availability_domains = [
-    "DcLl:AP-SINGAPORE-1-AD-1",
-    "DcLl:AP-SINGAPORE-1-AD-2",
-    "DcLl:AP-SINGAPORE-1-AD-3",
+    "DcLl:AP-SINGAPORE-1-AD-1",  # シンガポールはAD-1のみ
 ]
 
 for ad in availability_domains:
