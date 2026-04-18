@@ -35,8 +35,8 @@ for ad in availability_domains:
                 availability_domain=ad,
                 shape="VM.Standard.A1.Flex",
                 shape_config=oci.core.models.LaunchInstanceShapeConfigDetails(
-                    ocpus=4,
-                    memory_in_gbs=24
+                    ocpus=1,
+                    memory_in_gbs=6
                 ),
                 image_id=image_id,
                 display_name="a1-auto-instance",
